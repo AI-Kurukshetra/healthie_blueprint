@@ -83,8 +83,17 @@ export function Header({ avatarUrl, notifications, role, userEmail, userName }: 
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-80">
-            <div className="px-2 py-1.5">
+            <div className="flex items-center justify-between px-2 py-1.5">
               <p className="text-sm font-semibold">Notifications</p>
+              {unreadCount > 0 ? (
+                <Button
+                  className="text-xs h-auto p-0"
+                  onClick={() => setReadIds(notifications.map((n) => n.id))}
+                  variant="ghost"
+                >
+                  Read All
+                </Button>
+              ) : null}
             </div>
             <DropdownMenuSeparator />
             {notifications.length === 0 ? (

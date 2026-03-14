@@ -2,12 +2,14 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sparkles } from "lucide-react";
+import { Loader2, RotateCcw, Sparkles, Trash2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { generateSOAPNote } from "@/app/(dashboard)/provider/appointments/ai-actions";
 import { createClinicalNote, updateClinicalNote } from "@/app/(dashboard)/provider/appointments/actions";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -45,49 +47,13 @@ const clinicalNoteFormSchema = createClinicalNoteSchema.pick({
 
 type ClinicalNoteFormInput = z.infer<typeof clinicalNoteFormSchema>;
 
-function generateTemplate(appointmentType: AppointmentType, summary: string) {
-  const context = summary.trim() || "Virtual care follow-up visit.";
-
-  if (appointmentType === "initial") {
-    return {
-      subjective: `Patient presents for initial evaluation. ${context}\nPatient reports symptom onset over recent weeks with impact on daily function. No acute red-flag symptoms reported during visit.`,
-      objective:
-        "Telehealth assessment completed. Patient alert and oriented, speaking in full sentences, no visible respiratory distress. Available home vitals reviewed where provided.",
-      assessment:
-        "Initial clinical assessment suggests a stable chronic/acute condition requiring structured care plan, baseline workup, and symptom monitoring.",
-      plan:
-        "1) Establish baseline labs/diagnostic review as indicated.\n2) Start conservative first-line management and lifestyle guidance.\n3) Return precautions reviewed.\n4) Follow-up in 2-4 weeks.",
-    };
-  }
-
-  if (appointmentType === "follow_up") {
-    return {
-      subjective: `Patient seen for follow-up visit. ${context}\nPatient reports interval change since last encounter and discusses adherence/tolerance with current plan.`,
-      objective:
-        "Follow-up telehealth assessment completed. Overall appearance stable from prior visit. Relevant symptom trend and available home monitoring values reviewed.",
-      assessment:
-        "Condition demonstrates partial improvement but remains under active management. No urgent escalation indicators identified at this time.",
-      plan:
-        "1) Continue current regimen with minor adjustments as discussed.\n2) Reinforce adherence and self-monitoring.\n3) Repeat targeted testing only if symptoms persist/worsen.\n4) Follow-up in 2-6 weeks.",
-    };
-  }
-
-  return {
-    subjective: `Consultation visit completed. ${context}\nPatient seeking specialist guidance regarding diagnosis and treatment options.`,
-    objective:
-      "Consultative review performed via telehealth. Prior records, current symptoms, and medication history discussed. No immediate instability observed.",
-    assessment:
-      "Consultation supports a focused differential and management pathway. Findings are consistent with a non-emergent course requiring coordinated follow-through.",
-    plan:
-      "1) Provide consultation recommendations to primary care team.\n2) Initiate or adjust targeted therapy as appropriate.\n3) Educate patient on warning signs and escalation criteria.\n4) Schedule specialist follow-up as needed.",
-  };
-}
-
 export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNote, patientId }: ClinicalNoteEditorProps) {
   const router = useRouter();
   const [isEditing, setIsEditing] = useState(!existingNote);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
   const [visitSummary, setVisitSummary] = useState("");
+  const [isAIGenerated, setIsAIGenerated] = useState(false);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const form = useForm<ClinicalNoteFormInput>({
     defaultValues: {
@@ -174,6 +140,7 @@ export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNot
     }
 
     toast.success("Clinical note saved");
+    setIsAIGenerated(false);
     router.refresh();
 
     if (existingNote) {
@@ -191,12 +158,69 @@ export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNot
   return (
     <Form {...form}>
       <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
-        {isEmptySoap ? (
+        {isAIGenerated && (
+          <div className="flex items-center justify-between rounded-lg border border-purple-200 bg-purple-50 p-3 dark:border-purple-800 dark:bg-purple-950/30">
+            <div className="flex items-center gap-2">
+              <Badge variant="secondary" className="bg-purple-100 text-purple-700 dark:bg-purple-900 dark:text-purple-300">
+                <Sparkles className="mr-1 h-3 w-3" />
+                AI Generated
+              </Badge>
+              <span className="text-xs text-muted-foreground">Review and edit before saving</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Button
+                disabled={isGenerating}
+                onClick={async () => {
+                  setIsGenerating(true);
+                  const result = await generateSOAPNote(appointmentType, visitSummary);
+                  setIsGenerating(false);
+                  if (!result.success || !result.data) {
+                    toast.error(result.error ?? "AI generation failed. Please try again.");
+                    return;
+                  }
+                  form.setValue("subjective", result.data.subjective, { shouldDirty: true });
+                  form.setValue("objective", result.data.objective, { shouldDirty: true });
+                  form.setValue("assessment", result.data.assessment, { shouldDirty: true });
+                  form.setValue("plan", result.data.plan, { shouldDirty: true });
+                  toast.success("Note regenerated");
+                }}
+                size="sm"
+                type="button"
+                variant="outline"
+              >
+                {isGenerating ? <Loader2 className="mr-1 h-3 w-3 animate-spin" /> : <RotateCcw className="mr-1 h-3 w-3" />}
+                Regenerate
+              </Button>
+              <Button
+                disabled={isGenerating}
+                onClick={() => {
+                  form.reset({
+                    assessment: existingNote?.assessment ?? "",
+                    objective: existingNote?.objective ?? "",
+                    plan: existingNote?.plan ?? "",
+                    subjective: existingNote?.subjective ?? "",
+                  });
+                  setIsAIGenerated(false);
+                  setVisitSummary("");
+                  toast.info("AI content cleared");
+                }}
+                size="sm"
+                type="button"
+                variant="outline"
+              >
+                <Trash2 className="mr-1 h-3 w-3" />
+                Clear
+              </Button>
+            </div>
+          </div>
+        )}
+
+        {!isAIGenerated && isEmptySoap ? (
           <div className="space-y-3 rounded-lg border border-dashed p-4">
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
                 <p className="text-sm font-medium">Need a draft quickly?</p>
-                <p className="text-xs text-muted-foreground">Generate a SOAP template based on appointment type.</p>
+                <p className="text-xs text-muted-foreground">Generate a SOAP note using AI based on your visit summary.</p>
               </div>
               <Button onClick={() => setShowAIGenerator((prev) => !prev)} type="button" variant="outline">
                 <Sparkles className="mr-2 h-4 w-4" />
@@ -212,22 +236,38 @@ export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNot
                 <Textarea
                   id="visit_summary"
                   onChange={(event) => setVisitSummary(event.target.value)}
-                  placeholder="Briefly describe the visit..."
+                  placeholder="e.g. Patient reports persistent headaches for 2 weeks, worse in mornings..."
                   rows={3}
                   value={visitSummary}
                 />
                 <Button
-                  onClick={() => {
-                    const template = generateTemplate(appointmentType, visitSummary);
-                    form.setValue("subjective", template.subjective, { shouldDirty: true });
-                    form.setValue("objective", template.objective, { shouldDirty: true });
-                    form.setValue("assessment", template.assessment, { shouldDirty: true });
-                    form.setValue("plan", template.plan, { shouldDirty: true });
+                  disabled={isGenerating}
+                  onClick={async () => {
+                    setIsGenerating(true);
+                    const result = await generateSOAPNote(appointmentType, visitSummary);
+                    setIsGenerating(false);
+                    if (!result.success || !result.data) {
+                      toast.error(result.error ?? "AI generation failed. Please try again.");
+                      return;
+                    }
+                    form.setValue("subjective", result.data.subjective, { shouldDirty: true });
+                    form.setValue("objective", result.data.objective, { shouldDirty: true });
+                    form.setValue("assessment", result.data.assessment, { shouldDirty: true });
+                    form.setValue("plan", result.data.plan, { shouldDirty: true });
+                    setIsAIGenerated(true);
                     setShowAIGenerator(false);
+                    toast.success("AI note generated — review before saving");
                   }}
                   type="button"
                 >
-                  Generate
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating...
+                    </>
+                  ) : (
+                    "Generate"
+                  )}
                 </Button>
               </div>
             ) : null}
