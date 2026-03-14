@@ -3,8 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { Menu, Stethoscope } from "lucide-react";
-import { signOut } from "@/app/(auth)/actions";
-import { PendingSubmitButton } from "@/components/shared/PendingSubmitButton";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -27,9 +26,9 @@ export interface SidebarProps {
 }
 
 const ROLE_BADGE_CLASSES: Record<UserRole, string> = {
-  admin: "border-transparent bg-slate-100 text-slate-700",
-  patient: "border-transparent bg-teal-100 text-teal-700",
-  provider: "border-transparent bg-emerald-100 text-emerald-700",
+  admin: "border-transparent bg-white/15 text-white",
+  patient: "border-transparent bg-white/15 text-white",
+  provider: "border-transparent bg-white/15 text-white",
 };
 
 function getInitials(name: string) {
@@ -94,17 +93,11 @@ function SidebarBody({ avatarUrl, role, userEmail, userName }: SidebarProps) {
           <Badge className={cn("capitalize", ROLE_BADGE_CLASSES[role])} variant="secondary">
             {role}
           </Badge>
-          <form action={signOut}>
-            <PendingSubmitButton
-              className="text-[hsl(var(--sidebar-foreground))] hover:bg-white/10 hover:text-white"
-              pendingText="Logging out..."
-              size="sm"
-              type="submit"
-              variant="ghost"
-            >
-              Logout
-            </PendingSubmitButton>
-          </form>
+          <LogoutButton
+            className="text-[hsl(var(--sidebar-foreground))] hover:bg-white/10 hover:text-white"
+            size="sm"
+            variant="ghost"
+          />
         </div>
       </div>
     </div>
@@ -113,7 +106,7 @@ function SidebarBody({ avatarUrl, role, userEmail, userName }: SidebarProps) {
 
 export function Sidebar(props: SidebarProps) {
   return (
-    <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-white/10 bg-[hsl(var(--sidebar-background))] md:block">
+    <aside className="fixed inset-y-0 left-0 hidden w-64 border-r border-border/20 bg-[hsl(var(--sidebar-background))] md:block">
       <SidebarBody {...props} />
     </aside>
   );

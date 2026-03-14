@@ -126,7 +126,7 @@ export default async function LandingPage() {
                 <h1 className="text-4xl font-semibold tracking-tight sm:text-5xl">
                   Modern EHR for Virtual-First Healthcare
                 </h1>
-                <p className="max-w-2xl text-base text-slate-200 sm:text-lg">
+                <p className="max-w-2xl text-base text-white/80 sm:text-lg">
                   Streamline appointments, clinical documentation, and patient care - all in one platform. A clean,
                   modern alternative to legacy EHR systems.
                 </p>
@@ -184,7 +184,7 @@ export default async function LandingPage() {
             {features.map((feature) => (
               <Card key={feature.title}>
                 <CardHeader className="space-y-3">
-                  <div className="w-fit rounded-xl bg-teal-50 p-2 text-teal-700">
+                  <div className="w-fit rounded-xl bg-primary/15 p-2 text-primary">
                     <feature.icon className="h-5 w-5" />
                   </div>
                   <CardTitle className="text-xl">{feature.title}</CardTitle>
@@ -207,7 +207,7 @@ export default async function LandingPage() {
               <Card key={step}>
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2 text-lg">
-                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-teal-50 text-sm text-teal-700">
+                    <span className="flex h-8 w-8 items-center justify-center rounded-full bg-primary/15 text-sm text-primary">
                       {index + 1}
                     </span>
                     Step {index + 1}
@@ -268,16 +268,16 @@ export default async function LandingPage() {
         <div className="mx-auto flex w-full max-w-6xl flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
             <p className="text-sm font-semibold">CareSync</p>
-            <p className="text-xs text-slate-300">Modern EHR for virtual-first healthcare teams</p>
+            <p className="text-xs text-white/70">Modern EHR for virtual-first healthcare teams</p>
           </div>
-          <nav className="flex flex-wrap items-center gap-4 text-xs text-slate-300">
+          <nav className="flex flex-wrap items-center gap-4 text-xs text-white/70">
             <Link href="#features">Features</Link>
             <Link href="#">About</Link>
             <Link href="#">Privacy</Link>
             <Link href="#">Terms</Link>
           </nav>
         </div>
-        <p className="mx-auto mt-6 w-full max-w-6xl text-xs text-slate-300">Built with care for modern healthcare. © 2026 CareSync</p>
+        <p className="mx-auto mt-6 w-full max-w-6xl text-xs text-white/70">Built with care for modern healthcare. © 2026 CareSync</p>
       </footer>
     </main>
   );

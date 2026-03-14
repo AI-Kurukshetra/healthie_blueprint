@@ -20,7 +20,7 @@ import { createServerClient } from "@/lib/supabase/server";
 import type { AppointmentStatus, AppointmentType } from "@/lib/validations/appointment";
 
 interface AppointmentDetailsPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
 interface AppointmentRow {
@@ -61,7 +61,8 @@ function toAppointmentType(value: string): AppointmentType {
   return APPOINTMENT_TYPES.includes(value as AppointmentType) ? (value as AppointmentType) : "initial";
 }
 
-export default async function PatientAppointmentDetailsPage({ params }: AppointmentDetailsPageProps) {
+export default async function PatientAppointmentDetailsPage({ params: paramsPromise }: AppointmentDetailsPageProps) {
+  const params = await paramsPromise;
   const supabase = await createServerClient();
   const {
     data: { user },
@@ -178,7 +179,7 @@ export default async function PatientAppointmentDetailsPage({ params }: Appointm
                     </DialogDescription>
                   </DialogHeader>
                   <DialogFooter>
-                    <form action={cancelPatientAppointment.bind(null, appointment.id)}>
+                    <form action={async () => { "use server"; await cancelPatientAppointment(appointment.id); }}>
                       <PendingSubmitButton pendingText="Cancelling..." type="submit" variant="destructive">
                         Confirm Cancel
                       </PendingSubmitButton>

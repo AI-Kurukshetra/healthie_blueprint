@@ -42,9 +42,14 @@ export async function middleware(request: NextRequest) {
   const authPaths = ["/login", "/signup"];
   const isAuthPage = authPaths.some((path) => pathname.startsWith(path));
 
-  if (user && isAuthPage) {
+  if (user && (isAuthPage || pathname === "/")) {
+    const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
+    const role = profile?.role;
     const url = request.nextUrl.clone();
-    url.pathname = "/";
+    if (role === "provider") url.pathname = "/provider/dashboard";
+    else if (role === "patient") url.pathname = "/patient/dashboard";
+    else if (role === "admin") url.pathname = "/admin/dashboard";
+    else url.pathname = "/onboarding";
     return NextResponse.redirect(url);
   }
 

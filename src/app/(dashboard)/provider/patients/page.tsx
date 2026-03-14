@@ -18,10 +18,10 @@ import { createServerClient } from "@/lib/supabase/server";
 import type { AppointmentStatus } from "@/lib/validations/appointment";
 
 interface ProviderPatientsPageProps {
-  searchParams?: {
+  searchParams: Promise<{
     filter?: string;
     search?: string;
-  };
+  }>;
 }
 
 interface AppointmentWithPatient {
@@ -48,7 +48,8 @@ interface PatientRow {
 
 const FILTER_VALUES = ["all", "active", "inactive"] as const;
 
-export default async function ProviderPatientsPage({ searchParams }: ProviderPatientsPageProps) {
+export default async function ProviderPatientsPage({ searchParams: searchParamsPromise }: ProviderPatientsPageProps) {
+  const searchParams = await searchParamsPromise;
   const supabase = await createServerClient();
   const {
     data: { user },

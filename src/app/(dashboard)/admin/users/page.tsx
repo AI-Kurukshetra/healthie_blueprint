@@ -19,9 +19,9 @@ import { createServerClient } from "@/lib/supabase/server";
 import type { ProfileRole } from "@/lib/validations/profile";
 
 interface AdminUsersPageProps {
-  searchParams?: {
+  searchParams: Promise<{
     search?: string;
-  };
+  }>;
 }
 
 interface ProfileRow {
@@ -34,12 +34,13 @@ interface ProfileRow {
 }
 
 const ROLE_CLASSES: Record<ProfileRole, string> = {
-  admin: "border-transparent bg-slate-100 text-slate-700",
-  patient: "border-transparent bg-teal-50 text-teal-700",
-  provider: "border-transparent bg-emerald-100 text-emerald-700",
+  admin: "border-transparent bg-muted text-foreground",
+  patient: "border-transparent bg-primary/15 text-primary",
+  provider: "border-transparent bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
 };
 
-export default async function AdminUsersPage({ searchParams }: AdminUsersPageProps) {
+export default async function AdminUsersPage({ searchParams: searchParamsPromise }: AdminUsersPageProps) {
+  const searchParams = await searchParamsPromise;
   const supabase = await createServerClient();
   const {
     data: { user },
@@ -79,7 +80,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
   }
 
   return (
-    <div className="space-y-4">
+    <div className="space-y-6">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">User Management</h1>
@@ -133,7 +134,7 @@ export default async function AdminUsersPage({ searchParams }: AdminUsersPagePro
                     </TableCell>
                     <TableCell className="hidden md:table-cell">{format(new Date(profile.created_at), "MMM d, yyyy")}</TableCell>
                     <TableCell className="hidden sm:table-cell">
-                      <Badge className={isActive ? "border-transparent bg-teal-50 text-teal-700" : "border-transparent bg-gray-100 text-gray-500"} variant="outline">
+                      <Badge className={isActive ? "border-transparent bg-primary/15 text-primary" : "border-transparent bg-muted text-muted-foreground"} variant="outline">
                         {isActive ? "Active" : "Inactive"}
                       </Badge>
                     </TableCell>

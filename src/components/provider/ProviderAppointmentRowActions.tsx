@@ -34,7 +34,7 @@ export function ProviderAppointmentRowActions({ appointmentId, status }: Provide
 
         {status !== "completed" ? (
           <DropdownMenuItem asChild>
-            <form action={updateAppointmentStatus.bind(null, appointmentId, "completed")} className="w-full">
+            <form action={async () => { await updateAppointmentStatus(appointmentId, "completed"); }} className="w-full">
               <PendingSubmitButton className="w-full justify-start" pendingText="Saving..." type="submit" variant="ghost">
                 Mark Complete
               </PendingSubmitButton>
@@ -44,7 +44,7 @@ export function ProviderAppointmentRowActions({ appointmentId, status }: Provide
 
         {status !== "cancelled" ? (
           <DropdownMenuItem asChild>
-            <form action={updateAppointmentStatus.bind(null, appointmentId, "cancelled")} className="w-full">
+            <form action={async () => { await updateAppointmentStatus(appointmentId, "cancelled"); }} className="w-full">
               <PendingSubmitButton className="w-full justify-start" pendingText="Saving..." type="submit" variant="ghost">
                 Cancel
               </PendingSubmitButton>

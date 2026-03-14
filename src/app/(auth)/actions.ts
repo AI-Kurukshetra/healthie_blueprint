@@ -1,6 +1,5 @@
 "use server";
 
-import { redirect } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
 import { loginSchema, signupSchema, type LoginInput, type SignupInput } from "@/lib/validations/auth";
 
@@ -79,5 +78,4 @@ export async function signUp(values: SignupInput): Promise<AuthActionResult> {
 export async function signOut() {
   const supabase = await createServerClient();
   await supabase.auth.signOut();
-  redirect("/login");
 }

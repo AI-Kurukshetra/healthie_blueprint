@@ -27,19 +27,19 @@ const STATUS_LABELS: Record<BadgeValue, string> = {
 };
 
 const STATUS_CLASSES: Record<BadgeValue, string> = {
-  active: "border-transparent bg-teal-50 text-teal-700",
-  cancelled: "border-transparent bg-gray-100 text-gray-500",
-  completed: "border-transparent bg-emerald-50 text-emerald-700",
-  condition: "border-transparent bg-gray-100 text-gray-700",
-  consultation: "border-transparent bg-teal-50 text-teal-700",
-  discontinued: "border-transparent bg-red-50 text-red-600",
-  follow_up: "border-transparent bg-emerald-50 text-emerald-700",
-  initial: "border-transparent bg-slate-100 text-slate-700",
-  allergy: "border-transparent bg-amber-50 text-amber-700",
-  medication: "border-transparent bg-teal-50 text-teal-700",
-  no_show: "border-transparent bg-red-50 text-red-600",
-  resolved: "border-transparent bg-gray-100 text-gray-500",
-  scheduled: "border-transparent bg-teal-50 text-teal-700",
+  active: "border-transparent bg-primary/15 text-primary",
+  cancelled: "border-transparent bg-muted text-muted-foreground",
+  completed: "border-transparent bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  condition: "border-transparent bg-muted text-muted-foreground",
+  consultation: "border-transparent bg-primary/15 text-primary",
+  discontinued: "border-transparent bg-destructive/15 text-destructive",
+  follow_up: "border-transparent bg-emerald-500/15 text-emerald-700 dark:text-emerald-400",
+  initial: "border-transparent bg-muted text-foreground",
+  allergy: "border-transparent bg-amber-500/15 text-amber-700 dark:text-amber-400",
+  medication: "border-transparent bg-primary/15 text-primary",
+  no_show: "border-transparent bg-destructive/15 text-destructive",
+  resolved: "border-transparent bg-muted text-muted-foreground",
+  scheduled: "border-transparent bg-primary/15 text-primary",
 };
 
 export function StatusBadge({ className, value }: StatusBadgeProps) {

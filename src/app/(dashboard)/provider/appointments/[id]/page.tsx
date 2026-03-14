@@ -32,12 +32,13 @@ interface ClinicalNote {
 }
 
 interface ProviderAppointmentDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function ProviderAppointmentDetailPage({ params }: ProviderAppointmentDetailPageProps) {
+export default async function ProviderAppointmentDetailPage({ params: paramsPromise }: ProviderAppointmentDetailPageProps) {
+  const params = await paramsPromise;
   const parsedId = appointmentIdSchema.safeParse(params.id);
   if (!parsedId.success) {
     notFound();

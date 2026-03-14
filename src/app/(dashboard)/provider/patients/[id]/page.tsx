@@ -59,12 +59,13 @@ interface PatientMedicalRecord {
 }
 
 interface ProviderPatientDetailPageProps {
-  params: {
+  params: Promise<{
     id: string;
-  };
+  }>;
 }
 
-export default async function ProviderPatientDetailPage({ params }: ProviderPatientDetailPageProps) {
+export default async function ProviderPatientDetailPage({ params: paramsPromise }: ProviderPatientDetailPageProps) {
+  const params = await paramsPromise;
   const parsedId = patientIdSchema.safeParse(params.id);
   if (!parsedId.success) {
     notFound();

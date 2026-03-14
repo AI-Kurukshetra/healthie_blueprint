@@ -23,7 +23,6 @@ Modern EHR platform for virtual-first healthcare teams. A clean alternative to H
    cp .env.example .env.local
    ```
    Populate the file with your Supabase project URL, anon key, and service role key.
-   Optionally add your `GEMINI_API_KEY` for AI-powered SOAP note generation (falls back to templates if omitted).
 3. Run the development server:
    ```bash
    npm run dev

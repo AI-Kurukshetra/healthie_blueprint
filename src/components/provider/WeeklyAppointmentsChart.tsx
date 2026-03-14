@@ -48,7 +48,7 @@ export function WeeklyAppointmentsChart({ data }: WeeklyAppointmentsChartProps) 
             formatter={(value) => [`${value}`, "Appointments"]}
             labelStyle={{ color: "hsl(var(--muted-foreground))" }}
           />
-          <Bar dataKey="count" fill="#14B8A6" radius={[8, 8, 0, 0]} />
+          <Bar dataKey="count" fill="hsl(var(--primary))" radius={[8, 8, 0, 0]} />
         </BarChart>
       </ResponsiveContainer>
     </div>

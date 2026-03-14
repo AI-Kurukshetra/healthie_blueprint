@@ -41,7 +41,7 @@ export default async function OnboardingPage() {
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 py-4">
       <div className="space-y-2 text-center">
-        <Badge className="mx-auto border-transparent bg-teal-100 text-teal-700" variant="secondary">
+        <Badge className="mx-auto border-transparent bg-primary/15 text-primary" variant="secondary">
           Onboarding
         </Badge>
         <h1 className="text-3xl font-semibold tracking-tight">Welcome to CareSync</h1>

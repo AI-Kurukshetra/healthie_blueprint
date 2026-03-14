@@ -23,7 +23,7 @@ export function AppointmentDetailActions({ appointmentId, status }: AppointmentD
   return (
     <div className="flex flex-wrap items-center gap-2">
       {status === "scheduled" ? (
-        <form action={updateAppointmentStatus.bind(null, appointmentId, "completed")}>
+        <form action={async () => { await updateAppointmentStatus(appointmentId, "completed"); }}>
           <PendingSubmitButton pendingText="Saving..." type="submit">
             Mark Complete
           </PendingSubmitButton>
@@ -45,7 +45,7 @@ export function AppointmentDetailActions({ appointmentId, status }: AppointmentD
               </DialogDescription>
             </DialogHeader>
             <DialogFooter>
-              <form action={updateAppointmentStatus.bind(null, appointmentId, "cancelled")}>
+              <form action={async () => { await updateAppointmentStatus(appointmentId, "cancelled"); }}>
                 <PendingSubmitButton pendingText="Cancelling..." type="submit" variant="destructive">
                   Confirm Cancel
                 </PendingSubmitButton>

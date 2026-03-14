@@ -6,8 +6,7 @@ import { useEffect, useState } from "react";
 import { formatDistanceToNow } from "date-fns";
 import { Bell, ChevronDown, Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
-import { signOut } from "@/app/(auth)/actions";
-import { PendingSubmitButton } from "@/components/shared/PendingSubmitButton";
+import { LogoutButton } from "@/components/shared/LogoutButton";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -76,7 +75,7 @@ export function Header({ avatarUrl, notifications, role, userEmail, userName }: 
             <Button aria-label="Open notifications" className="relative" size="icon" variant="ghost">
               <Bell className="h-4 w-4" />
               {unreadCount > 0 ? (
-                <span className="absolute -right-0.5 -top-0.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-teal-600 px-1 text-[11px] font-semibold text-white">
+                <span className="absolute -right-0.5 -top-0.5 inline-flex h-5 min-w-[1.25rem] items-center justify-center rounded-full bg-primary px-1 text-[11px] font-semibold text-primary-foreground">
                   {unreadCount > 9 ? "9+" : unreadCount}
                 </span>
               ) : null}
@@ -154,11 +153,7 @@ export function Header({ avatarUrl, notifications, role, userEmail, userName }: 
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
-              <form action={signOut} className="w-full">
-                <PendingSubmitButton className="w-full justify-start" pendingText="Logging out..." type="submit" variant="ghost">
-                  Logout
-                </PendingSubmitButton>
-              </form>
+              <LogoutButton className="w-full justify-start" variant="ghost" />
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

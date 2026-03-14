@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 
 export default function NotFound() {
   return (
-    <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-slate-50 to-teal-50/40 px-6 py-12 dark:from-slate-950 dark:to-slate-900">
+    <main className="flex min-h-screen items-center justify-center bg-gradient-to-b from-background to-muted/40 px-6 py-12">
       <div className="w-full max-w-lg rounded-2xl border bg-card p-8 text-center shadow-sm">
         <div className="mx-auto mb-4 inline-flex h-12 w-12 items-center justify-center rounded-xl bg-primary/15 text-primary">
           <Stethoscope className="h-6 w-6" />

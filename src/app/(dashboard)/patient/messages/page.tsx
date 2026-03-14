@@ -12,9 +12,9 @@ import { createServerClient } from "@/lib/supabase/server";
 const partnerIdSchema = z.string().uuid();
 
 interface PatientMessagesPageProps {
-  searchParams?: {
+  searchParams: Promise<{
     with?: string;
-  };
+  }>;
 }
 
 interface AppointmentProviderRow {
@@ -43,7 +43,8 @@ interface ConversationItem {
   unreadCount: number;
 }
 
-export default async function PatientMessagesPage({ searchParams }: PatientMessagesPageProps) {
+export default async function PatientMessagesPage({ searchParams: searchParamsPromise }: PatientMessagesPageProps) {
+  const searchParams = await searchParamsPromise;
   const supabase = await createServerClient();
   const {
     data: { user },
@@ -175,7 +176,7 @@ export default async function PatientMessagesPage({ searchParams }: PatientMessa
 
   return (
     <div className="space-y-4">
-      <div>
+      <div className="space-y-1">
         <h1 className="text-2xl font-semibold tracking-tight">Messages</h1>
         <p className="text-sm text-muted-foreground">Secure conversation threads with your care providers.</p>
       </div>
