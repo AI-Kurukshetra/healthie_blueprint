@@ -35,6 +35,7 @@
 3. **"Table not found"**: Run `docs/templates/schema.sql` in Supabase SQL Editor first
 4. **"Permission denied"**: Service role key bypasses RLS — verify you're using the right key
 5. **Last resort**: Copy the INSERT statements and run them directly in Supabase SQL Editor
+6. **Need full rollback of dummy data**: follow `docs/runbook-dummy-data.md` and run `scripts/seed-cleanup.ts`
 
 ## RLS Blocking Data
 - **Symptom**: Pages load but show empty (no data), even though data exists in Supabase Table Editor

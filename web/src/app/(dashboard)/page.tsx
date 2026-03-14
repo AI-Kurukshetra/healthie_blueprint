@@ -1,5 +1,10 @@
 import { redirect } from "next/navigation";
 import { createServerClient } from "@/lib/supabase/server";
+import type { UserRole } from "@/config/nav";
+
+interface DashboardRoleProfile {
+  role: UserRole | null;
+}
 
 export default async function DashboardHomePage() {
   const supabase = await createServerClient();
@@ -15,7 +20,7 @@ export default async function DashboardHomePage() {
     .from("profiles")
     .select("role")
     .eq("id", user.id)
-    .single();
+    .single<DashboardRoleProfile>();
 
   if (error) {
     throw new Error(error.message);

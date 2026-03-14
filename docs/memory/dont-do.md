@@ -44,3 +44,48 @@
 ## Discovered During Build
 
 <!-- Codex appends new anti-patterns here -->
+
+### Phase 1B
+- Don’t rely only on client-side Supabase auth calls for core sign-in/sign-up flow.
+- Don’t skip server-side Zod validation for auth payloads before calling Supabase.
+- Don’t bypass middleware role checks with direct URL routing assumptions.
+
+### Phase 1C
+- Don’t put Radix dropdown/dialog components directly into provider server pages.
+- Don’t duplicate status/note mutation logic across appointment list and detail routes.
+- Don’t skip UUID validation for dynamic route params before querying protected records.
+
+### Phase 1D
+- Don’t gate the public landing page behind auth middleware redirects.
+- Don’t introduce dashboard shell patterns (sidebar/header) into the marketing page.
+- Don’t rely on unescaped punctuation in JSX copy when lint rules enforce escaped entities.
+
+### Phase 2A
+- Don’t leave role dashboards as static placeholders once CRUD data exists.
+- Don’t compute dashboard KPIs in client components when server queries can provide canonical values.
+- Don’t build mixed activity feeds with hardcoded samples; derive from real recent rows.
+
+### Phase 3
+- Don’t ship provider/admin data routes without route-level `loading.tsx` coverage.
+- Don’t rely on only global `app/error.tsx` when route-group boundaries are expected.
+- Don’t keep full desktop table columns visible on narrow screens when they reduce core action usability.
+
+### Phase 1C (Patient)
+- Don’t submit patient booking forms directly to Supabase from the client.
+- Don’t let shared status components hardcode only one domain’s enums.
+- Don’t ship appointment “View Details” links without a real detail route.
+
+### Phase 2A (Patient Dashboard)
+- Don’t compute patient stats in client components with `useEffect` on initial render.
+- Don’t mix past and upcoming appointments in the “Next Appointment” card.
+- Don’t count inactive records in health summary headline metrics.
+
+### Phase 2B
+- Don’t allow cross-role messaging without verifying a patient-provider relationship on the server.
+- Don’t keep admin role changes purely client-side; enforce admin checks in server actions.
+- Don’t split settings into separate role pages when one shared route can handle role-specific sections.
+
+### Phase 3
+- Don’t rely on HTML `required` alone for medical/product forms that already use Zod schemas.
+- Don’t ship dense data tables without horizontal scroll handling at mobile breakpoints.
+- Don’t skip route-group error boundaries for auth and dashboard surfaces.

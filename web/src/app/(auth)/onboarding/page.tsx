@@ -1,7 +1,7 @@
 import { Heart, Shield, Stethoscope } from "lucide-react";
 import { redirect } from "next/navigation";
+import { PendingSubmitButton } from "@/components/shared/PendingSubmitButton";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { createServerClient } from "@/lib/supabase/server";
 import { setUserRole } from "./actions";
@@ -41,7 +41,7 @@ export default async function OnboardingPage() {
   return (
     <div className="mx-auto w-full max-w-4xl space-y-6 py-4">
       <div className="space-y-2 text-center">
-        <Badge className="mx-auto" variant="secondary">
+        <Badge className="mx-auto border-transparent bg-teal-100 text-teal-700" variant="secondary">
           Onboarding
         </Badge>
         <h1 className="text-3xl font-semibold tracking-tight">Welcome to CareSync</h1>
@@ -49,7 +49,7 @@ export default async function OnboardingPage() {
       </div>
 
       <div className="grid gap-4 md:grid-cols-3">
-        <Card className="transition-colors hover:border-primary/40">
+        <Card className="rounded-2xl border border-transparent bg-card transition-colors hover:border-primary/60 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20">
           <CardHeader className="space-y-3">
             <Heart className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl">Patient</CardTitle>
@@ -57,14 +57,14 @@ export default async function OnboardingPage() {
           </CardHeader>
           <CardContent>
             <form action={setUserRole.bind(null, "patient")}>
-              <Button className="w-full" type="submit" variant="outline">
+              <PendingSubmitButton className="w-full" pendingText="Continuing..." type="submit">
                 Continue as Patient
-              </Button>
+              </PendingSubmitButton>
             </form>
           </CardContent>
         </Card>
 
-        <Card className="transition-colors hover:border-primary/40">
+        <Card className="rounded-2xl border border-transparent bg-card transition-colors hover:border-primary/60 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20">
           <CardHeader className="space-y-3">
             <Stethoscope className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl">Provider</CardTitle>
@@ -72,14 +72,14 @@ export default async function OnboardingPage() {
           </CardHeader>
           <CardContent>
             <form action={setUserRole.bind(null, "provider")}>
-              <Button className="w-full" type="submit" variant="outline">
+              <PendingSubmitButton className="w-full" pendingText="Continuing..." type="submit">
                 Continue as Provider
-              </Button>
+              </PendingSubmitButton>
             </form>
           </CardContent>
         </Card>
 
-        <Card className="transition-colors hover:border-primary/40">
+        <Card className="rounded-2xl border border-transparent bg-card transition-colors hover:border-primary/60 focus-within:border-primary focus-within:ring-1 focus-within:ring-primary/20">
           <CardHeader className="space-y-3">
             <Shield className="h-6 w-6 text-primary" />
             <CardTitle className="text-xl">Admin</CardTitle>
@@ -87,9 +87,9 @@ export default async function OnboardingPage() {
           </CardHeader>
           <CardContent>
             <form action={setUserRole.bind(null, "admin")}>
-              <Button className="w-full" type="submit" variant="outline">
+              <PendingSubmitButton className="w-full" pendingText="Continuing..." type="submit">
                 Continue as Admin
-              </Button>
+              </PendingSubmitButton>
             </form>
           </CardContent>
         </Card>

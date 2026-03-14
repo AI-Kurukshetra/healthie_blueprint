@@ -32,15 +32,21 @@
 ## Current Build State
 
 - Phase 1A (Foundation): ⬜ Not started
-- Phase 1B (Auth + Layout): ⬜ Not started
-- Phase 1C (Core CRUD): ⬜ Not started
-- Phase 1D (Landing Page): ⬜ Not started
-- Phase 2A (Dashboard Stats): ⬜ Not started
-- Phase 2B (Secondary Features): ⬜ Not started
-- Phase 3 (Polish): ⬜ Not started
+- Phase 1B (Auth + Layout): ✅ Completed
+- Phase 1C (Core CRUD): ✅ Completed (provider + patient scopes completed across split terminals)
+- Phase 1D (Landing Page): ✅ Completed
+- Phase 2A (Dashboard Stats): ✅ Completed (provider + admin scope completed in this terminal; patient scope already completed)
+- Phase 2B (Secondary Features): ✅ Completed (search/filter, messaging, admin users, shared settings)
+- Phase 3 (Polish): ✅ Completed (patient polish scope completed in this terminal; provider/admin polish completed in parallel)
 
 ## Demo Credentials
 
 - **Provider**: provider@caresync.demo / Demo1234!
 - **Patient**: patient@caresync.demo / Demo1234!
 - **Admin**: admin@caresync.demo / Demo1234!
+
+## Demo Data Operations
+
+- Seed and cleanup instructions: `docs/runbook-dummy-data.md`
+- Seed script: `scripts/seed.ts`
+- Cleanup script: `scripts/seed-cleanup.ts`

@@ -61,3 +61,79 @@
 ## Decisions Made During Build
 
 <!-- Codex appends new decisions here as they're made -->
+
+### Phase 1B / Auth
+- **Decision**: Use Server Actions for `signIn`, `signUp`, `signOut`, and onboarding role assignment.
+- **Reason**: Keeps auth mutations server-side and allows shared Zod validation across client and server.
+
+### Phase 1B / Routing
+- **Decision**: Keep middleware as the source of truth for auth-page redirects and role-route enforcement.
+- **Reason**: Centralized route protection prevents inconsistent navigation behavior across pages.
+
+### Phase 1C / Provider Scope
+- **Decision**: Implement only provider CRUD surfaces (`/provider/patients`, `/provider/appointments`, `/provider/notes`) in this terminal.
+- **Reason**: Prevented overlap with concurrent patient-page work and reduced merge conflict risk.
+
+### Phase 1C / Actions
+- **Decision**: Centralize appointment status and clinical-note mutations in `provider/appointments/actions.ts`.
+- **Reason**: Keeps revalidation and validation behavior consistent across list and detail UIs.
+
+### Phase 1D / Marketing Page
+- **Decision**: Keep the landing page as a pure Server Component with anchor-link navigation.
+- **Reason**: No runtime interactivity is required, so this keeps complexity and client JS minimal.
+
+### Phase 1D / Trust Section
+- **Decision**: Use technology badges and an operations snapshot card instead of external logo/image assets.
+- **Reason**: Delivers social-proof structure quickly without adding asset management overhead.
+
+### Phase 2A / Provider Dashboard
+- **Decision**: Compute provider stats via targeted aggregate queries and derive pending-notes from completed appointments without notes.
+- **Reason**: Keeps dashboard totals accurate while avoiding fragile client-side counting logic.
+
+### Phase 2A / Admin Dashboard
+- **Decision**: Build system activity by merging recent appointments and recent notes server-side and sorting by created timestamp.
+- **Reason**: Provides a simple cross-entity activity feed without adding a dedicated audit table in this phase.
+
+### Phase 3 / Error Handling
+- **Decision**: Add route-group-level error boundaries for `(dashboard)` and `(auth)` in addition to global app error.
+- **Reason**: Segment-specific fallbacks give users targeted recovery options without collapsing the full app shell.
+
+### Phase 3 / Responsive Tables
+- **Decision**: Hide lower-priority columns on small screens for provider/admin list pages while preserving full desktop data.
+- **Reason**: Prevents horizontal crowding at 375px without introducing separate mobile-only list components.
+
+### Phase 1C / Patient Booking
+- **Decision**: Keep `/patient/appointments/new` as a client form with a server action (`bookAppointment`) for inserts.
+- **Reason**: Preserves interactive multi-step UX while enforcing auth and Zod validation on the server.
+
+### Phase 1C / Shared UI
+- **Decision**: Reuse one `StatusBadge` and one `EmptyState` across patient and provider pages.
+- **Reason**: Prevents status-color drift and keeps empty-state language consistent across roles.
+
+### Phase 2A / Patient Dashboard
+- **Decision**: Keep dashboard queries inside the Server Component with parallel count/data fetches.
+- **Reason**: Delivers fresh role-scoped stats without client fetch waterfalls.
+
+### Phase 2A / Health Summary
+- **Decision**: Define summary as active conditions + active medications + active allergies.
+- **Reason**: Keeps patient dashboard focused on current care context, not historical noise.
+
+### Phase 2B / Messaging
+- **Decision**: Implement messaging as server-rendered thread pages with refresh/revalidation instead of realtime sockets.
+- **Reason**: Keeps scope aligned to phase goals while delivering secure asynchronous communication.
+
+### Phase 2B / Settings
+- **Decision**: Use one shared `/settings` route with role-specific detail sections (provider/patient/admin).
+- **Reason**: Reduces duplicate pages and keeps profile/account updates in a single, consistent UX.
+
+### Phase 2B / Admin Users
+- **Decision**: Handle role/status mutations via admin-only server actions and client row-action dialogs.
+- **Reason**: Preserves server-side authorization checks while keeping admin management interactions lightweight.
+
+### Phase 3 / Validation Audit
+- **Decision**: Standardize remaining high-impact forms (clinical notes, messaging, settings, admin role dialog) on RHF + Zod.
+- **Reason**: Delivers consistent inline validation behavior and predictable submit-state UX.
+
+### Phase 3 / Differentiator
+- **Decision**: Implement CSV export for provider patient list and admin users via authenticated route handlers.
+- **Reason**: High impact with low complexity and clear demo value without schema changes.

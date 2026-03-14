@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { signUp } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { signupSchema, type SignupInput } from "@/lib/validations/auth";
 
 export function SignupForm() {
@@ -32,38 +32,35 @@ export function SignupForm() {
   });
 
   const onSubmit = async (values: SignupInput) => {
-    const supabase = createBrowserSupabaseClient();
-
-    const { error } = await supabase.auth.signUp({
-      email: values.email,
-      password: values.password,
-      options: {
-        data: {
-          full_name: values.fullName,
-        },
-      },
-    });
-
-    if (error) {
-      form.setError("root", { message: error.message });
+    const result = await signUp(values);
+    if (!result.success) {
+      form.setError("root", { message: result.error ?? "Failed to create account" });
       return;
     }
 
     toast.success("Account created");
-    router.push("/onboarding");
+    router.push(result.redirectTo ?? "/onboarding");
     router.refresh();
   };
 
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="space-y-4"
+          method="post"
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault();
+            void form.handleSubmit(onSubmit)(event);
+          }}
+        >
           <FormField
             control={form.control}
             name="fullName"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Full name</FormLabel>
+                <FormItem>
+                <FormLabel>Full name (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="name" placeholder="Dr. Alex Morgan" {...field} />
                 </FormControl>
@@ -76,8 +73,8 @@ export function SignupForm() {
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormItem>
+                <FormLabel>Email (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="email" placeholder="name@clinic.com" type="email" {...field} />
                 </FormControl>
@@ -90,8 +87,8 @@ export function SignupForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormItem>
+                <FormLabel>Password (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="new-password" placeholder="Create a password" type="password" {...field} />
                 </FormControl>
@@ -104,8 +101,8 @@ export function SignupForm() {
             control={form.control}
             name="confirmPassword"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Confirm password</FormLabel>
+                <FormItem>
+                <FormLabel>Confirm password (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="new-password" placeholder="Confirm your password" type="password" {...field} />
                 </FormControl>

@@ -4,7 +4,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 export default function LoginPage() {
   return (
     <div className="mx-auto w-full max-w-md">
-      <Card>
+      <Card className="rounded-2xl bg-white shadow-md">
         <CardHeader className="space-y-2">
           <CardTitle className="text-center text-2xl">Sign in to CareSync</CardTitle>
           <CardDescription className="text-center">Secure access to your care operations platform.</CardDescription>

@@ -6,7 +6,6 @@ import {
   LayoutDashboard,
   MessageSquare,
   Settings,
-  Shield,
   Users,
   type LucideIcon,
 } from "lucide-react";
@@ -33,11 +32,12 @@ export const navConfig: Record<UserRole, NavItem[]> = {
     { label: "Appointments", href: "/provider/appointments", icon: Calendar },
     { label: "Clinical Notes", href: "/provider/notes", icon: ClipboardList },
     { label: "Schedule", href: "/provider/schedule", icon: Activity },
+    { label: "Messages", href: "/provider/messages", icon: MessageSquare },
     { label: "Settings", href: "/settings", icon: Settings },
   ],
   admin: [
     { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
     { label: "Users", href: "/admin/users", icon: Users },
-    { label: "Settings", href: "/admin/settings", icon: Shield },
+    { label: "Settings", href: "/admin/settings", icon: Settings },
   ],
 };

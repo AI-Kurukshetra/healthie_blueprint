@@ -33,6 +33,23 @@ phase-2a: add provider dashboard with stats cards
 
 Commit after each logical unit of work — not after every file change, but not waiting until the whole phase is done either.
 
+## Git Identity (Required for This Repo)
+Use this repository-local identity for all commits and pushes:
+
+```bash
+git config --local user.name "Divya Soni"
+git config --local user.email "151527450+SoniDivya24@users.noreply.github.com"
+```
+
+Verify before rewriting history or pushing:
+
+```bash
+git config --local --get user.name
+git config --local --get user.email
+```
+
+Why: this prevents GitHub push rejection (`GH007`) caused by private email protection.
+
 ## Merge Flow
 After verifying a phase locally:
 ```bash

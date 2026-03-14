@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
+import { signIn } from "@/app/(auth)/actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -15,7 +16,6 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { createBrowserSupabaseClient } from "@/lib/supabase/client";
 import { loginSchema, type LoginInput } from "@/lib/validations/auth";
 
 export function LoginForm() {
@@ -30,33 +30,35 @@ export function LoginForm() {
   });
 
   const onSubmit = async (values: LoginInput) => {
-    const supabase = createBrowserSupabaseClient();
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email: values.email,
-      password: values.password,
-    });
-
-    if (error) {
-      form.setError("root", { message: error.message });
+    const result = await signIn(values);
+    if (!result.success) {
+      form.setError("root", { message: result.error ?? "Failed to sign in" });
       return;
     }
 
     toast.success("Signed in");
-    router.push("/");
+    router.push(result.redirectTo ?? "/");
     router.refresh();
   };
 
   return (
     <div className="space-y-6">
       <Form {...form}>
-        <form className="space-y-4" onSubmit={form.handleSubmit(onSubmit)}>
+        <form
+          className="space-y-4"
+          method="post"
+          noValidate
+          onSubmit={(event) => {
+            event.preventDefault();
+            void form.handleSubmit(onSubmit)(event);
+          }}
+        >
           <FormField
             control={form.control}
             name="email"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Email</FormLabel>
+                <FormItem>
+                <FormLabel>Email (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="email" placeholder="name@clinic.com" type="email" {...field} />
                 </FormControl>
@@ -69,8 +71,8 @@ export function LoginForm() {
             control={form.control}
             name="password"
             render={({ field }) => (
-              <FormItem>
-                <FormLabel>Password</FormLabel>
+                <FormItem>
+                <FormLabel>Password (required)</FormLabel>
                 <FormControl>
                   <Input autoComplete="current-password" placeholder="Enter your password" type="password" {...field} />
                 </FormControl>

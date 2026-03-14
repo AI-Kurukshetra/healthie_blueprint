@@ -2,9 +2,24 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function ProviderDashboardLoading() {
   return (
-    <div className="space-y-4">
-      <Skeleton className="h-8 w-64" />
-      <Skeleton className="h-36 w-full" />
+    <div className="space-y-6">
+      <div className="space-y-2">
+        <Skeleton className="h-8 w-56" />
+        <Skeleton className="h-4 w-80" />
+      </div>
+
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <Skeleton key={index} className="h-28 w-full" />
+        ))}
+      </div>
+
+      <div className="grid gap-4 xl:grid-cols-2">
+        <Skeleton className="h-64 w-full" />
+        <Skeleton className="h-64 w-full" />
+      </div>
+
+      <Skeleton className="h-24 w-full" />
     </div>
   );
 }
