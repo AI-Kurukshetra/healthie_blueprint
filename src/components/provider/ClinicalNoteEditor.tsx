@@ -2,12 +2,13 @@
 
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Sparkles } from "lucide-react";
+import { Loader2, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
 import { createClinicalNote, updateClinicalNote } from "@/app/(dashboard)/provider/appointments/actions";
+import { generateSOAPNote } from "@/app/(dashboard)/provider/appointments/ai-actions";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -88,6 +89,7 @@ export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNot
   const [isEditing, setIsEditing] = useState(!existingNote);
   const [showAIGenerator, setShowAIGenerator] = useState(false);
   const [visitSummary, setVisitSummary] = useState("");
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const form = useForm<ClinicalNoteFormInput>({
     defaultValues: {
@@ -217,17 +219,37 @@ export function ClinicalNoteEditor({ appointmentId, appointmentType, existingNot
                   value={visitSummary}
                 />
                 <Button
-                  onClick={() => {
-                    const template = generateTemplate(appointmentType, visitSummary);
-                    form.setValue("subjective", template.subjective, { shouldDirty: true });
-                    form.setValue("objective", template.objective, { shouldDirty: true });
-                    form.setValue("assessment", template.assessment, { shouldDirty: true });
-                    form.setValue("plan", template.plan, { shouldDirty: true });
+                  disabled={isGenerating}
+                  onClick={async () => {
+                    setIsGenerating(true);
+                    const result = await generateSOAPNote(appointmentType, visitSummary);
+                    setIsGenerating(false);
+
+                    if (result.success && result.data) {
+                      form.setValue("subjective", result.data.subjective, { shouldDirty: true });
+                      form.setValue("objective", result.data.objective, { shouldDirty: true });
+                      form.setValue("assessment", result.data.assessment, { shouldDirty: true });
+                      form.setValue("plan", result.data.plan, { shouldDirty: true });
+                    } else {
+                      const template = generateTemplate(appointmentType, visitSummary);
+                      form.setValue("subjective", template.subjective, { shouldDirty: true });
+                      form.setValue("objective", template.objective, { shouldDirty: true });
+                      form.setValue("assessment", template.assessment, { shouldDirty: true });
+                      form.setValue("plan", template.plan, { shouldDirty: true });
+                      toast.warning("AI unavailable — used template instead");
+                    }
                     setShowAIGenerator(false);
                   }}
                   type="button"
                 >
-                  Generate
+                  {isGenerating ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Generating…
+                    </>
+                  ) : (
+                    "Generate"
+                  )}
                 </Button>
               </div>
             ) : null}
