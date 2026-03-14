@@ -1,0 +1,52 @@
+# CareSync — Codex CLI Project Configuration
+# Docs: https://developers.openai.com/codex/config-reference/
+
+model = "gpt-5.3-codex"
+project_doc_max_bytes = 65536
+project_doc_fallback_filenames = ["AGENTS.md", "CLAUDE.md"]
+
+# Approval & sandbox
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+
+# Reasoning
+model_reasoning_effort = "high"
+personality = "pragmatic"
+
+# Search & tools
+web_search = "cached"
+
+[sandbox_workspace_write]
+writable_roots = ["./web", "./src", "./scripts", "./docs", "./supabase"]
+network_access = true
+
+[features]
+rmcp_client = true
+shell_snapshot = true
+undo = true
+multi_agent = true
+web_search = "cached"
+
+# ─── MCP Servers ───────────────────────────────────────────────
+
+[mcp_servers.context7]
+command = "npx"
+args = ["-y", "@upstash/context7-mcp@latest"]
+
+[mcp_servers.supabase]
+type = "remote"
+url = "https://mcp.supabase.com/mcp?project_ref=cxpuroevrgspzsexsyug&access_token=sbp_519f7238e208c7cd424fc5ba56ea11c6407ec899"
+
+# ─── Shell Environment ────────────────────────────────────────
+
+[shell_environment_policy]
+include_only = [
+  "PATH",
+  "HOME",
+  "NODE_ENV",
+  "NEXT_PUBLIC_SUPABASE_URL",
+  "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+  "SUPABASE_SERVICE_ROLE_KEY",
+  "SUPABASE_PROJECT_ID",
+  "VERCEL_TOKEN",
+]

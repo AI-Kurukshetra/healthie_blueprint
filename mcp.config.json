@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "supabase": {
+      "type": "websocket",
+      "url": "wss://mcp.supabase.com/mcp",
+      "env": {
+        "SUPABASE_URL": "https://cxpuroevrgspzsexsyug.supabase.co",
+        "SUPABASE_ACCESS_TOKEN": "${SUPABASE_ACCESS_TOKEN}"
+      }
+    }
+  }
+}
