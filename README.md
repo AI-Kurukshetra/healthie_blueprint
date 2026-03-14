@@ -11,7 +11,7 @@ Supabase operates a managed MCP server that exposes higher-level helpers such as
    export SUPABASE_URL="https://<PROJECT_REF>.supabase.co"
    export SUPABASE_ACCESS_TOKEN="<SUPABASE_SERVICE_ROLE_KEY>"
    ```
-3. Add the server to your MCP client. Example for Claude Desktop (`~/Library/Application Support/Claude/claude_desktop_config.json`):
+3. Add the server to your MCP client. Example MCP client config:
    ```json
    {
      "mcpServers": {
