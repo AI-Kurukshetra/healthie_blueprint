@@ -58,8 +58,6 @@ const steps = [
   "Start managing appointments and patient care",
 ] as const;
 
-const tech = ["Next.js", "Supabase", "Vercel", "TypeScript"] as const;
-
 export default async function LandingPage() {
   const supabase = await createServerClient();
   const {
@@ -217,22 +215,6 @@ export default async function LandingPage() {
                   <p className="text-sm text-muted-foreground">{step}</p>
                 </CardContent>
               </Card>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="px-6 py-24">
-        <div className="mx-auto w-full max-w-5xl space-y-8">
-          <div className="space-y-2 text-center">
-            <h2 className="text-3xl font-semibold tracking-tight">Built with modern, trusted technologies</h2>
-          </div>
-
-          <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-            {tech.map((item) => (
-              <div key={item} className="rounded-xl bg-card px-4 py-3 text-center text-sm font-medium shadow-sm">
-                {item}
-              </div>
             ))}
           </div>
         </div>
