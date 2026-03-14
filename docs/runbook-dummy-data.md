@@ -18,13 +18,13 @@ From repo root:
 
 ```bash
 set -a
-source web/.env.local
+source .env.local
 set +a
 npx tsx scripts/seed.ts
 ```
 
 Notes:
-- `scripts/seed.ts` reads `.env.local` at repo root, so exporting `web/.env.local` first is required when root env is blank.
+- `scripts/seed.ts` reads `.env.local` at repo root.
 - This script is additive for appointments/notes/records/availability, so repeated runs can increase volume.
 
 ## Remove Demo Data (Full Rollback)
@@ -33,7 +33,7 @@ From repo root:
 
 ```bash
 set -a
-source web/.env.local
+source .env.local
 set +a
 npx tsx scripts/seed-cleanup.ts
 ```
@@ -48,7 +48,7 @@ For a clean demo reset:
 
 ```bash
 set -a
-source web/.env.local
+source .env.local
 set +a
 npx tsx scripts/seed-cleanup.ts
 npx tsx scripts/seed.ts

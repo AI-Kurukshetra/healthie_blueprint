@@ -17,7 +17,7 @@ personality = "pragmatic"
 web_search = "cached"
 
 [sandbox_workspace_write]
-writable_roots = ["./web", "./src", "./scripts", "./docs", "./supabase"]
+writable_roots = ["./src", "./scripts", "./docs", "./supabase", "./public"]
 network_access = true
 
 [features]
@@ -25,7 +25,7 @@ rmcp_client = true
 shell_snapshot = true
 undo = true
 multi_agent = true
-web_search = "cached"
+web_search = true
 
 # ─── MCP Servers ───────────────────────────────────────────────
 

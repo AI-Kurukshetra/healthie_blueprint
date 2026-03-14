@@ -12,6 +12,29 @@ Modern EHR platform for virtual-first healthcare teams. A clean alternative to H
 - shadcn/ui + Tailwind CSS
 - Deployed on Vercel
 
+## Getting Started
+
+1. Install dependencies:
+   ```bash
+   npm install
+   ```
+2. Copy environment variables:
+   ```bash
+   cp .env.example .env.local
+   ```
+   Populate the file with your Supabase project URL, anon key, and service role key.
+3. Run the development server:
+   ```bash
+   npm run dev
+   ```
+4. Open http://localhost:3000 in your browser.
+
+## Scripts
+- `npm run dev` – Start the Next.js dev server
+- `npm run build` – Create an optimized production build
+- `npm run start` – Run the production build locally
+- `npm run lint` – Lint the project with ESLint + Next.js rules
+
 ## Demo Accounts
 | Role | Email | Password |
 |------|-------|----------|
